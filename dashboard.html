@@ -8,7 +8,7 @@
   body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #90a7ff; /* warna biru lembut mirip halaman login */
+    background-color: #90a7ff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,6 +21,7 @@
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.15);
     padding: 40px 50px;
+    text-align: center;
   }
   .welcome {
     color: #1e2a78;
@@ -52,7 +53,7 @@
 </head>
 <body>
   <div class="dashboard-container" role="main">
-    <h1 class="welcome">Welcome to Your Student Dashboard</h1>
+    <h1 class="welcome" id="welcomeMsg">Welcome to Your Student Dashboard</h1>
     <p class="info">
       This is your personal dashboard where you can manage your courses,
       check your progress, view announcements, and much more.
@@ -60,12 +61,22 @@
     <button class="btn-logout" onclick="logout()">Logout</button>
   </div>
 
-  <script>
-    function logout() {
-      // Di sini Anda bisa tambahkan logout logic, misal clear session/localStorage lalu redirect ke login
-      alert('You have been logged out.');
-      window.location.href = 'index.html'; // arahkan ke halaman login
-    }
-  </script>
+<script>
+  // Ambil data user yang login dari sessionStorage
+  const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
+  const welcomeMsg = document.getElementById('welcomeMsg');
+
+  if (!user) {
+    // Jika tidak ada user logged in, redirect ke login
+    window.location.href = 'index.html';
+  } else {
+    welcomeMsg.textContent = `Welcome, ${user.fullname || user.username}!`;
+  }
+
+  function logout() {
+    sessionStorage.removeItem('loggedInUser');
+    window.location.href = 'index.html';
+  }
+</script>
 </body>
 </html>
