@@ -4,7 +4,7 @@ const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
 export default async (req, res) => {
-  const { username } = req.query; // Ambil username dari query
+  const { username } = req.query;
   try {
     await client.connect();
     const db = client.db('studentapp');
@@ -20,6 +20,8 @@ export default async (req, res) => {
       const { id } = req.body;
       await db.collection('notes').deleteOne({ _id: new ObjectId(id) });
       res.status(200).json({ success: true });
+    } else {
+      res.status(405).json({ error: 'Method not allowed' });
     }
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
