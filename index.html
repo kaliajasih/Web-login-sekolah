@@ -124,7 +124,7 @@
 <body>
 <div class="container">
   <div class="left" aria-label="Illustration">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpLiorEQCu3D13-5IZRwfFTL8a_mc4AAIj1f8uCi77NQ&s=10" alt="Student working on laptop and phone" />
+    <img src="https://cdn-icons-png.flaticon.com/512/3048/3048124.png" alt="Student working on laptop" />
   </div>
   <div class="right">
     <h2>Student Login</h2>
@@ -143,7 +143,7 @@
   const loginForm = document.getElementById('loginForm');
   const errorMsg = document.getElementById('error-msg');
 
-  loginForm.addEventListener('submit', function(e) {
+  loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorMsg.style.display = 'none';
 
@@ -156,15 +156,22 @@
       return;
     }
 
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.username === usernameInput && u.password === passwordInput);
-
-    if (user) {
-      // Simpan user login di sessionStorage
-      sessionStorage.setItem('loggedInUser', JSON.stringify(user));
-      window.location.href = 'dashboard.html';
-    } else {
-      errorMsg.textContent = 'Username/email atau password salah.';
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: usernameInput, password: passwordInput })
+      });
+      const data = await response.json();
+      if (data.success) {
+        sessionStorage.setItem('loggedInUser', JSON.stringify(data.user));
+        window.location.href = 'dashboard.html';
+      } else {
+        errorMsg.textContent = data.error;
+        errorMsg.style.display = 'block';
+      }
+    } catch (error) {
+      errorMsg.textContent = 'Server error';
       errorMsg.style.display = 'block';
     }
   });
