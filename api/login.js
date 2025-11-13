@@ -1,6 +1,7 @@
 const { MongoClient } = require('mongodb');
+const bcrypt = require('bcrypt');
 
-const uri = process.env.MONGODB_URI; // Ambil dari environment variable
+const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
 export default async (req, res) => {
@@ -10,8 +11,8 @@ export default async (req, res) => {
   try {
     await client.connect();
     const db = client.db('studentapp');
-    const user = await db.collection('users').findOne({ username, password });
-    if (user) {
+    const user = await db.collection('users').findOne({ username });
+    if (user && await bcrypt.compare(password, user.password)) {
       res.status(200).json({ success: true, user });
     } else {
       res.status(401).json({ error: 'Invalid credentials' });
