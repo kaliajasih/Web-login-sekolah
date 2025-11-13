@@ -1,4 +1,5 @@
 const { MongoClient } = require('mongodb');
+const bcrypt = require('bcrypt');
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
@@ -13,7 +14,8 @@ export default async (req, res) => {
     const existingUser = await db.collection('users').findOne({ username });
     if (existingUser) return res.status(400).json({ error: 'User already exists' });
 
-    await db.collection('users').insertOne({ fullname, username, password, kelas });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await db.collection('users').insertOne({ fullname, username, password: hashedPassword, kelas });
     res.status(201).json({ success: true });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
