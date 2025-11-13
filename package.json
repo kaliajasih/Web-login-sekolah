@@ -5,6 +5,7 @@
     "dev": "vercel dev"
   },
   "dependencies": {
-    "mongodb": "^4.10.0"
+    "mongodb": "^4.10.0",
+    "bcrypt": "^5.1.0"
   }
 }
