@@ -141,6 +141,7 @@
       <input type="text" id="fullname" placeholder="Full Name" required aria-label="Full Name" />
       <input type="text" id="username" placeholder="Username or Email" required aria-label="Username or Email" />
       <input type="password" id="password" placeholder="Password" required aria-label="Password" />
+      <input type="text" id="kelas" placeholder="Nama Kelas (e.g., 10A)" required aria-label="Nama Kelas" />
       <button type="submit">Sign Up</button>
     </form>
     <p class="login-text">Already have an account? <a href="index.html">Login Now</a></p>
@@ -160,8 +161,9 @@
     const fullname = document.getElementById('fullname').value.trim();
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
+    const kelas = document.getElementById('kelas').value.trim();
 
-    if (!fullname || !username || !password) {
+    if (!fullname || !username || !password || !kelas) {
       errorMsg.textContent = "Please fill in all fields";
       errorMsg.style.display = 'block';
       return;
@@ -176,7 +178,7 @@
       return;
     }
 
-    users.push({ fullname, username, password });
+    users.push({ fullname, username, password, kelas });
     localStorage.setItem('users', JSON.stringify(users));
 
     successMsg.textContent = "Sign Up successful! You can now log in.";
