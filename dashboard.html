@@ -12,28 +12,130 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    padding: 20px;
   }
   .dashboard-container {
     background-color: white;
-    width: 800px;
-    max-width: 90vw;
+    width: 100%;
+    max-width: 1000px;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-    padding: 40px 50px;
+    padding: 30px;
     text-align: center;
   }
   .welcome {
     color: #1e2a78;
     font-size: 28px;
     font-weight: 700;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
   }
-  .info {
-    font-size: 16px;
-    color: #444;
-    line-height: 1.6;
-    margin-bottom: 40px;
+  .tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  .tab {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0 5px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+  }
+  .tab.active {
+    background-color: #2563eb;
+    color: white;
+  }
+  .tab-content {
+    display: none;
+  }
+  .tab-content.active {
+    display: block;
+  }
+  .notes-section, .chat-section, .settings-section {
+    text-align: left;
+  }
+  .notes-list {
+    margin-top: 20px;
+  }
+  .note-item {
+    background: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .note-item button {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .chat-messages {
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+  }
+  .chat-input {
+    display: flex;
+  }
+  .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  .chat-input button {
+    padding: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .settings-form {
+    display: flex;
+    flex-direction: column;
+  }
+  .settings-form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  .settings-form button {
+    padding: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .delete-account {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .delete-account button {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .delete-account button:hover {
+    background: #cc0000;
   }
   .btn-logout {
     background-color: #1e2a78;
@@ -45,32 +147,192 @@
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.3s;
+    margin-top: 20px;
   }
   .btn-logout:hover {
     background-color: #16205a;
+  }
+  .add-note {
+    margin-bottom: 20px;
+  }
+  .add-note input {
+    padding: 10px;
+    width: 70%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  .add-note button {
+    padding: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
   }
 </style>
 </head>
 <body>
   <div class="dashboard-container" role="main">
     <h1 class="welcome" id="welcomeMsg">Welcome to Your Student Dashboard</h1>
-    <p class="info">
-      This is your personal dashboard where you can manage your courses,
-      check your progress, view announcements, and much more.
-    </p>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('notes')">Notes</button>
+      <button class="tab" onclick="showTab('chat')">Chat</button>
+      <button class="tab" onclick="showTab('settings')">Settings</button>
+    </div>
+    <div id="notes" class="tab-content active notes-section">
+      <h3>My Notes</h3>
+      <div class="add-note">
+        <input type="text" id="noteInput" placeholder="Add a new note" />
+        <button onclick="addNote()">Add Note</button>
+      </div>
+      <div class="notes-list" id="notesList"></div>
+    </div>
+    <div id="chat" class="tab-content chat-section">
+      <h3>Chat Room</h3>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+    <div id="settings" class="tab-content settings-section">
+      <h3>Edit Profile</h3>
+      <form class="settings-form" id="settingsForm">
+        <input type="text" id="editFullname" placeholder="Full Name" />
+        <input type="text" id="editUsername" placeholder="Username" />
+        <input type="password" id="editPassword" placeholder="New Password" />
+        <input type="text" id="editKelas" placeholder="Nama Kelas" />
+        <button type="submit">Save Changes</button>
+      </form>
+      <div class="delete-account">
+        <button onclick="deleteAccount()">Delete Account</button>
+      </div>
+    </div>
     <button class="btn-logout" onclick="logout()">Logout</button>
   </div>
 
 <script>
-  // Ambil data user yang login dari sessionStorage
-  const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
+  let currentUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
   const welcomeMsg = document.getElementById('welcomeMsg');
 
-  if (!user) {
-    // Jika tidak ada user logged in, redirect ke login
+  if (!currentUser) {
     window.location.href = 'index.html';
   } else {
-    welcomeMsg.textContent = `Welcome, ${user.fullname || user.username}!`;
+    welcomeMsg.textContent = `Welcome, ${currentUser.fullname || currentUser.username}!`;
+    loadNotes();
+    loadChat();
+    loadSettings();
+  }
+
+  function showTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+  }
+
+  // Notes
+  function loadNotes() {
+    const notes = JSON.parse(localStorage.getItem(`notes_${currentUser.username}`)) || [];
+    const notesList = document.getElementById('notesList');
+    notesList.innerHTML = '';
+    notes.forEach((note, index) => {
+      const noteItem = document.createElement('div');
+      noteItem.className = 'note-item';
+      noteItem.innerHTML = `<span>${note}</span><button onclick="deleteNote(${index})">Delete</button>`;
+      notesList.appendChild(noteItem);
+    });
+  }
+
+  function addNote() {
+    const noteInput = document.getElementById('noteInput');
+    const note = noteInput.value.trim();
+    if (note) {
+      const notes = JSON.parse(localStorage.getItem(`notes_${currentUser.username}`)) || [];
+      notes.push(note);
+      localStorage.setItem(`notes_${currentUser.username}`, JSON.stringify(notes));
+      noteInput.value = '';
+      loadNotes();
+    }
+  }
+
+  function deleteNote(index) {
+    const notes = JSON.parse(localStorage.getItem(`notes_${currentUser.username}`)) || [];
+    notes.splice(index, 1);
+    localStorage.setItem(`notes_${currentUser.username}`, JSON.stringify(notes));
+    loadNotes();
+  }
+
+  // Chat
+  function loadChat() {
+    const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.innerHTML = '';
+    messages.forEach(msg => {
+      const msgDiv = document.createElement('div');
+      msgDiv.textContent = `${msg.user}: ${msg.text}`;
+      chatMessages.appendChild(msgDiv);
+    });
+  }
+
+  function sendMessage() {
+    const chatInput = document.getElementById('chatInput');
+    const text = chatInput.value.trim();
+    if (text) {
+      const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+      messages.push({ user: currentUser.fullname || currentUser.username, text });
+      localStorage.setItem('chatMessages', JSON.stringify(messages));
+      chatInput.value = '';
+      loadChat();
+    }
+  }
+
+  // Settings
+  function loadSettings() {
+    document.getElementById('editFullname').value = currentUser.fullname || '';
+    document.getElementById('editUsername').value = currentUser.username || '';
+    document.getElementById('editKelas').value = currentUser.kelas || '';
+  }
+
+  document.getElementById('settingsForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const newFullname = document.getElementById('editFullname').value.trim();
+    const newUsername = document.getElementById('editUsername').value.trim();
+    const newPassword = document.getElementById('editPassword').value;
+    const newKelas = document.getElementById('editKelas').value.trim();
+
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    const userIndex = users.findIndex(u => u.username === currentUser.username);
+
+    if (userIndex !== -1) {
+      users[userIndex].fullname = newFullname;
+      users[userIndex].username = newUsername;
+      users[userIndex].kelas = newKelas;
+      if (newPassword) users[userIndex].password = newPassword;
+
+      localStorage.setItem('users', JSON.stringify(users));
+      currentUser = users[userIndex];
+      sessionStorage.setItem('loggedInUser', JSON.stringify(currentUser));
+      alert('Profile updated!');
+      loadSettings();
+    }
+  });
+
+  // Delete Account
+  function deleteAccount() {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      users = users.filter(u => u.username !== currentUser.username);
+      localStorage.setItem('users', JSON.stringify(users));
+
+      // Hapus notes pribadi user
+      localStorage.removeItem(`notes_${currentUser.username}`);
+
+      // Logout dan redirect
+      sessionStorage.removeItem('loggedInUser');
+      alert('Account deleted successfully.');
+      window.location.href = 'index.html';
+    }
   }
 
   function logout() {
@@ -79,4 +341,4 @@
   }
 </script>
 </body>
-</html>
+                                            </html>
