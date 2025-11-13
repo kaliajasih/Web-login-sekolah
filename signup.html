@@ -153,7 +153,7 @@
   const errorMsg = document.getElementById('error-msg');
   const successMsg = document.getElementById('success-msg');
 
-  signupForm.addEventListener('submit', function(e) {
+  signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorMsg.style.display = 'none';
     successMsg.style.display = 'none';
@@ -169,22 +169,25 @@
       return;
     }
 
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-
-    const userExists = users.some(u => u.username.toLowerCase() === username.toLowerCase());
-    if (userExists) {
-      errorMsg.textContent = "Username or Email already registered";
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullname, username, password, kelas })
+      });
+      const data = await response.json();
+      if (data.success) {
+        successMsg.textContent = "Sign Up successful! You can now log in.";
+        successMsg.style.display = 'block';
+        signupForm.reset();
+      } else {
+        errorMsg.textContent = data.error;
+        errorMsg.style.display = 'block';
+      }
+    } catch (error) {
+      errorMsg.textContent = 'Server error';
       errorMsg.style.display = 'block';
-      return;
     }
-
-    users.push({ fullname, username, password, kelas });
-    localStorage.setItem('users', JSON.stringify(users));
-
-    successMsg.textContent = "Sign Up successful! You can now log in.";
-    successMsg.style.display = 'block';
-
-    signupForm.reset();
   });
 </script>
 </body>
