@@ -5,465 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Student Dashboard</title>
   <style>
-    /* Reset dan style dasar */
-    * {
-      box-sizing: border-box;
-    }
     body, html {
       margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      font-family: Arial, sans-serif;
       background-color: #90a7ff;
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      padding: 20px;
+      align-items: center;
     }
     .container {
       background: white;
-      max-width: 960px;
+      max-width: 600px;
       width: 100%;
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      border-radius: 10px;
       padding: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
       text-align: center;
+      position: relative;
+    }
+    .menu-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #333;
+    }
+    .menu-dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 20px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+    .menu-dropdown a {
+      display: block;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: #333;
+      border-bottom: 1px solid #eee;
+    }
+    .menu-dropdown a:last-child {
+      border-bottom: none;
+    }
+    .menu-dropdown a:hover {
+      background: #f0f0f0;
     }
     h1 {
       color: #1e2a78;
-      font-size: 28px;
-      margin-bottom: 24px;
-      font-weight: 700;
+      margin-bottom: 20px;
     }
-    .tabs {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 24px;
-      gap: 12px;
-    }
-    .tab {
-      padding: 10px 18px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background-color: #f0f0f0;
-      transition: background-color 0.3s ease;
-      user-select: none;
-      font-size: 16px;
-    }
-    .tab.active {
-      background-color: #2563eb;
-      color: white;
-    }
-    .tab-content {
+    .settings-section, .ulangan-section {
       display: none;
-      text-align: left;
     }
-    .tab-content.active {
+    .settings-section.active, .ulangan-section.active {
       display: block;
     }
-    /* Notes */
-    .add-note {
-      margin-bottom: 16px;
-      display: flex;
-      gap: 12px;
-    }
-    .add-note input[type="text"] {
-      flex-grow: 1;
+    .settings-form input {
+      display: block;
+      width: 95%;
+      margin: 10px 0;
       padding: 10px;
-      border-radius: 6px;
       border: 1px solid #ddd;
-      font-size: 16px;
-    }
-    .add-note button {
-      padding: 10px 18px;
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .add-note button:hover {
-      background-color: #1c44a7;
-    }
-    .note-item {
-      background-color: #f9f9f9;
-      padding: 10px 15px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .note-item button {
-      background: #e74646;
-      border: none;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 6px 12px;
-      border-radius: 6px;
-      transition: background-color 0.3s ease;
-    }
-    .note-item button:hover {
-      background: #b32f2f;
-    }
-    /* Chat */
-    .chat-messages {
-      border: 1px solid #ddd;
-      height: 200px;
-      border-radius: 8px;
-      padding: 12px;
-      overflow-y: auto;
-      background-color: #f9f9f9;
-      margin-bottom: 12px;
-      font-size: 15px;
-      line-height: 1.4;
-    }
-    .chat-input {
-      display: flex;
-      gap: 12px;
-    }
-    .chat-input input[type="text"] {
-      flex-grow: 1;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-      font-size: 16px;
-    }
-    .chat-input button {
-      padding: 10px 18px;
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .chat-input button:hover {
-      background-color: #1c44a7;
-    }
-    /* Settings */
-    .settings-form input[type="text"],
-    .settings-form input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 14px;
-      border-radius: 6px;
-      border: 1px solid #ddd;
+      border-radius: 5px;
       font-size: 16px;
     }
     .settings-form button {
-      padding: 10px;
-      width: 100%;
-      border: none;
-      border-radius: 6px;
+      padding: 10px 20px;
       background: #2563eb;
       color: white;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      font-size: 16px;
-    }
-    .settings-form button:hover {
-      background: #1c44a7;
-    }
-    .delete-account button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background: #e74646;
       border: none;
-      border-radius: 6px;
-      font-weight: 700;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      font-size: 16px;
-    }
-    .delete-account button:hover {
-      background: #b32f2f;
-    }
-    /* Logout */
-    .btn-logout {
-      margin-top: 32px;
-      background: #1e2a78;
-      color: white;
-      padding: 14px 30px;
-      font-size: 17px;
-      font-weight: 700;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      width: 100%;
-    }
-    .btn-logout:hover {
-      background: #16205a;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1 id="welcomeMsg">Welcome to Your Student Dashboard</h1>
-
-    <div class="tabs">
-      <button class="tab active" id="tab-notes-btn" aria-controls="tab-notes" aria-selected="true">Notes</button>
-      <button class="tab" id="tab-chat-btn" aria-controls="tab-chat" aria-selected="false">Chat</button>
-      <button class="tab" id="tab-settings-btn" aria-controls="tab-settings" aria-selected="false">Settings</button>
-    </div>
-
-    <section id="tab-notes" class="tab-content active" role="tabpanel" aria-labelledby="tab-notes-btn">
-      <div class="add-note">
-        <input type="text" id="noteInput" placeholder="Add a new note" aria-label="New note" />
-        <button id="addNoteBtn">Add Note</button>
-      </div>
-      <div id="notesList"></div>
-    </section>
-
-    <section id="tab-chat" class="tab-content" role="tabpanel" aria-labelledby="tab-chat-btn">
-      <div id="chatMessages" class="chat-messages" aria-live="polite" aria-label="Chat messages"></div>
-      <div class="chat-input">
-        <input type="text" id="chatInput" placeholder="Type a message..." aria-label="Chat input" />
-        <button id="sendMsgBtn">Send</button>
-      </div>
-    </section>
-
-    <section id="tab-settings" class="tab-content" role="tabpanel" aria-labelledby="tab-settings-btn">
-      <form id="settingsForm" class="settings-form" autocomplete="on">
-        <input type="text" id="editFullname" name="fullname" placeholder="Full Name" aria-label="Full Name" required />
-        <input type="text" id="editUsername" name="username" placeholder="Username" aria-label="Username" required />
-        <input type="password" id="editPassword" name="password" placeholder="New Password" aria-label="New Password" />
-        <input type="text" id="editKelas" name="kelas" placeholder="Nama Kelas" aria-label="Class Name" required />
-        <button type="submit">Save Changes</button>
-      </form>
-      <div class="delete-account">
-        <button id="btnDeleteAccount" type="button">Delete Account</button>
-      </div>
-    </section>
-
-    <button class="btn-logout" id="btnLogout" type="button">Logout</button>
-  </div>
-
-  <script>
-    // --- Tab handling ---
-    const tabs = document.querySelectorAll('.tab');
-    const tabContents = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => {
-          t.classList.remove('active');
-          t.setAttribute('aria-selected', 'false');
-        });
-        tab.classList.add('active');
-        tab.setAttribute('aria-selected', 'true');
-        const target = tab.getAttribute('aria-controls');
-        tabContents.forEach(content => {
-          content.classList.remove('active');
-          if(content.id === target) content.classList.add('active');
-        });
-      });
-    });
-
-    // --- Initial user data ---
-    let currentUser = null;
-    const welcomeMsg = document.getElementById('welcomeMsg');
-
-    function showError(msg) {
-      alert(msg);
-    }
-
-    function loadCurrentUser() {
-      const userData = sessionStorage.getItem('loggedInUser');
-      if (!userData) {
-        window.location.href = 'index.html';
-        return false;
-      }
-      currentUser = JSON.parse(userData);
-      welcomeMsg.textContent = `Welcome, ${currentUser.fullname || currentUser.username}!`;
-      return true;
-    }
-
-    // --- Notes ---
-    async function loadNotes() {
-      try {
-        const response = await fetch(`/api/notes?username=${encodeURIComponent(currentUser.username)}`);
-        if (!response.ok) throw new Error('Failed to load notes');
-        const notes = await response.json();
-        const notesList = document.getElementById('notesList');
-        notesList.innerHTML = '';
-        notes.forEach(note => {
-          const div = document.createElement('div');
-          div.className = 'note-item';
-          div.textContent = note.text;
-          const btnDelete = document.createElement('button');
-          btnDelete.textContent = 'Delete';
-          btnDelete.addEventListener('click', () => deleteNote(note._id));
-          div.appendChild(btnDelete);
-          notesList.appendChild(div);
-        });
-      } catch (err) {
-        showError(err.message);
-      }
-    }
-    async function addNote() {
-      const noteInput = document.getElementById('noteInput');
-      const text = noteInput.value.trim();
-      if(!text) return;
-      try {
-        const response = await fetch('/api/notes', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ username: currentUser.username, text })
-        });
-        if(!response.ok) throw new Error('Failed to add note');
-        noteInput.value = '';
-        loadNotes();
-      } catch (err) {
-        showError(err.message);
-      }
-    }
-    async function deleteNote(id) {
-      if(!confirm('Are you sure to delete this note?')) return;
-      try {
-        const response = await fetch('/api/notes', {
-          method: 'DELETE',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ id })
-        });
-        if(!response.ok) throw new Error('Failed to delete note');
-        loadNotes();
-      } catch (err) {
-        showError(err.message);
-      }
-    }
-
-    // --- Chat & polling ---
-    async function loadChat() {
-      try {
-        const response = await fetch('/api/chat');
-        if(!response.ok) throw new Error('Failed to load chat messages');
-        const messages = await response.json();
-        const chatMessages = document.getElementById('chatMessages');
-        chatMessages.innerHTML = '';
-        messages.forEach(msg => {
-          const div = document.createElement('div');
-          div.textContent = `${msg.user}: ${msg.text}`;
-          chatMessages.appendChild(div);
-        });
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      } catch (err) {
-        console.error('Chat load error:', err);
-      }
-    }
-    async function sendMessage() {
-      const chatInput = document.getElementById('chatInput');
-      const text = chatInput.value.trim();
-      if (!text) return;
-      try {
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ user: currentUser.fullname || currentUser.username, text })
-        });
-        if (!response.ok) throw new Error('Failed to send message');
-        chatInput.value = '';
-        loadChat();
-      } catch (err) {
-        showError(err.message);
-      }
-    }
-    let chatPollingInterval = null;
-    function startChatPolling() {
-      loadChat();
-      chatPollingInterval = setInterval(loadChat, 3000);
-    }
-    function stopChatPolling() {
-      if(chatPollingInterval) clearInterval(chatPollingInterval);
-    }
-
-    // --- Settings ---
-    function loadSettings(){
-      document.getElementById('editFullname').value = currentUser.fullname || '';
-      document.getElementById('editUsername').value = currentUser.username || '';
-      document.getElementById('editKelas').value = currentUser.kelas || '';
-      document.getElementById('editPassword').value = '';
-    }
-    async function saveSettings(e) {
-      e.preventDefault();
-      const fullname = document.getElementById('editFullname').value.trim();
-      const username = document.getElementById('editUsername').value.trim();
-      const password = document.getElementById('editPassword').value;
-      const kelas = document.getElementById('editKelas').value.trim();
-      if(!fullname || !username || !kelas) {
-        showError('Full Name, Username, and Nama Kelas are required.');
-        return;
-      }
-      try {
-        const response = await fetch(`/api/profile?username=${encodeURIComponent(currentUser.username)}`, {
-          method: 'PUT',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ fullname, newUsername: username, password, kelas })
-        });
-        const data = await response.json();
-        if(data.success) {
-          alert('Profile updated!');
-          currentUser.fullname = fullname;
-          currentUser.username = username;
-          currentUser.kelas = kelas;
-          sessionStorage.setItem('loggedInUser', JSON.stringify(currentUser));
-          loadSettings();
-        } else {
-          showError('Failed to update profile.');
-        }
-      } catch (err) {
-        showError(err.message);
-      }
-    }
-    async function deleteAccount() {
-      if(confirm('Are you sure to delete your account? This action cannot be undone.')) {
-        try {
-          const response = await fetch(`/api/profile?username=${encodeURIComponent(currentUser.username)}`, {
-            method: 'DELETE'
-          });
-          const data = await response.json();
-          if(data.success) {
-            alert('Account deleted.');
-            sessionStorage.removeItem('loggedInUser');
-            window.location.href = 'index.html';
-          } else {
-            showError('Failed to delete account.');
-          }
-        } catch (err) {
-          showError(err.message);
-        }
-      }
-    }
-    function logout() {
-      stopChatPolling();
-      sessionStorage.removeItem('loggedInUser');
-      window.location.href = 'index.html';
-    }
-
-    // --- Event listeners ---
-    document.getElementById('addNoteBtn').addEventListener('click', addNote);
-    document.getElementById('sendMsgBtn').addEventListener('click', sendMessage);
-    document.getElementById('settingsForm').addEventListener('submit', saveSettings);
-    document.getElementById('btnDeleteAccount').addEventListener('click', deleteAccount);
-    document.getElementById('btnLogout').addEventListener('click', logout);
-
-    // --- Onload initialization ---
-    window.onload = () => {
-      if(loadCurrentUser()) {
-        loadNotes();
-        loadSettings();
-        startChatPolling();
-      }
-    }
-  </script>
-</body>
-</html>
+      border
