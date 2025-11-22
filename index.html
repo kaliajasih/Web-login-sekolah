@@ -1,180 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Student Login</title>
-<style>
-  body {
-    margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #8aa4f5;
-    display: flex; justify-content: center; align-items: center; height: 100vh;
-  }
-  .container {
-    background: white;
-    border-radius: 16px;
-    width: 700px;
-    max-width: 95vw;
-    display: flex;
-    box-shadow: 0 10px 35px rgba(0,0,0,0.1);
-    overflow: hidden;
-  }
-  .left {
-    background-color: #d6e0ff;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-  }
-  .left img {
-    max-width: 100%;
-    height: auto;
-  }
-  .right {
-    flex: 1;
-    padding: 60px 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  h2 {
-    margin: 0 0 10px 0;
-    font-size: 28px;
-    font-weight: 700;
-    color: #223263;
-  }
-  p.description {
-    margin: 0 0 30px 0;
-    font-size: 14px;
-    color: #6b7280;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  input[type="text"], input[type="password"] {
-    margin-bottom: 20px;
-    height: 48px;
-    border-radius: 8px;
-    border: 1.5px solid #d1d5db;
-    font-size: 16px;
-    padding: 0 15px;
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-  input[type="text"]:focus, input[type="password"]:focus {
-    border-color: #2563eb;
-  }
-  button {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    height: 48px;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  button:hover {
-    background-color: #1e40af;
-  }
-  p.signup-text {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #6b7280;
-  }
-  p.signup-text a {
-    color: #2563eb;
-    text-decoration: none;
-    font-weight: 600;
-    margin-left: 6px;
-  }
-  p.signup-text a:hover {
-    text-decoration: underline;
-  }
-  .error {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 15px;
-    display: none;
-  }
-
-  @media (max-width: 800px) {
-    .container {
-      flex-direction: column;
-      width: 90vw;
-      height: auto;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Login</title>
+  <style>
+    body {
+      margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #8aa4f5;
+      display: flex; justify-content: center; align-items: center; height: 100vh;
     }
-    .left, .right {
-      padding: 30px 25px;
-      flex: none;
-      width: 100%;
+    .container {
+      background: white;
+      border-radius: 16px;
+      width: 700px;
+      max-width: 95vw;
+      display: flex;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.1);
+      overflow: hidden;
     }
     .left {
-      order: 1;
+      background-color: #d6e0ff;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+    .left img {
+      max-width: 100%;
+      height: auto;
     }
     .right {
-      order: 2;
+      flex: 1;
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-  }
-</style>
+    h2 {
+      margin: 0 0 10px 0;
+      font-size: 28px;
+      font-weight: 700;
+      color: #223263;
+    }
+    p.description {
+      margin: 0 0 30px 0;
+      font-size: 14px;
+      color: #6b7280;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    input[type="text"], input[type="password"] {
+      margin-bottom: 20px;
+      height: 48px;
+      border-radius: 8px;
+      border: 1.5px solid #d1d5db;
+      font-size: 16px;
+      padding: 0 15px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+      border-color: #2563eb;
+    }
+    button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      height: 48px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #1e40af;
+    }
+    p.signup-text {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+    p.signup-text a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+    p.signup-text a:hover {
+      text-decoration: underline;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 15px;
+      display: none;
+    }
+    @media (max-width: 800px) {
+      .container {
+        flex-direction: column;
+        width: 90vw;
+        height: auto;
+      }
+      .left, .right {
+        padding: 30px 25px;
+        flex: none;
+        width: 100%;
+      }
+      .left {
+        order: 1;
+      }
+      .right {
+        order: 2;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-  <div class="left" aria-label="Illustration">
-    <img src="https://cdn-icons-png.flaticon.com/512/3048/3048124.png" alt="Student working on laptop" />
+  <div class="container">
+    <div class="left" aria-label="Illustration">
+      <img src="https://cdn-icons-png.flaticon.com/512/3048/3048124.png" alt="Student working on laptop" />
+    </div>
+    <div class="right">
+      <h2>Student Login</h2>
+      <p class="description">Hey, enter your details to sign in to your account</p>
+      <div id="error-msg" class="error"></div>
+      <form id="loginForm">
+        <input type="text" id="username" placeholder="Enter your username or email" required aria-label="Username or email" />
+        <input type="password" id="password" placeholder="Enter your password" required aria-label="Password" />
+        <button type="submit">Login In</button>
+      </form>
+      <p class="signup-text">Don't have an account? <a href="signup.html">Signup Now</a></p>
+    </div>
   </div>
-  <div class="right">
-    <h2>Student Login</h2>
-    <p class="description">Hey, enter your details to sign in to your account</p>
-    <div id="error-msg" class="error"></div>
-    <form id="loginForm">
-      <input type="text" id="username" placeholder="Enter your username or email" required aria-label="Username or email" />
-      <input type="password" id="password" placeholder="Enter your password" required aria-label="Password" />
-      <button type="submit">Login In</button>
-    </form>
-    <p class="signup-text">Don't have an account? <a href="signup.html">Signup Now</a></p>
-  </div>
-</div>
 
-<script>
-  const loginForm = document.getElementById('loginForm');
-  const errorMsg = document.getElementById('error-msg');
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('error-msg');
 
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    errorMsg.style.display = 'none';
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMsg.style.display = 'none';
 
-    const usernameInput = document.getElementById('username').value.trim();
-    const passwordInput = document.getElementById('password').value;
+      const usernameInput = document.getElementById('username').value.trim();
+      const passwordInput = document.getElementById('password').value;
 
-    if (!usernameInput || !passwordInput) {
-      errorMsg.textContent = 'Please fill in all fields';
-      errorMsg.style.display = 'block';
-      return;
-    }
+      if (!usernameInput || !passwordInput) {
+        errorMsg.textContent = 'Please fill in all fields';
+        errorMsg.style.display = 'block';
+        return;
+      }
 
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: usernameInput, password: passwordInput })
-      });
-      const data = await response.json();
-      if (data.success) {
-        sessionStorage.setItem('loggedInUser', JSON.stringify(data.user));
-        window.location.href = 'dashboard.html';
-      } else {
-        errorMsg.textContent = data.error;
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: usernameInput, password: passwordInput })
+        });
+        const data = await response.json();
+        if (data.success) {
+          sessionStorage.setItem('loggedInUser', JSON.stringify(data.user));
+          window.location.href = 'dashboard.html';
+        } else {
+          errorMsg.textContent = data.error;
+          errorMsg.style.display = 'block';
+        }
+      } catch (error) {
+        errorMsg.textContent = 'Server error';
         errorMsg.style.display = 'block';
       }
-    } catch (error) {
-      errorMsg.textContent = 'Server error';
-      errorMsg.style.display = 'block';
-    }
-  });
-</script>
+    });
+  </script>
 </body>
 </html>
