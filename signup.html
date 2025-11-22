@@ -53,7 +53,7 @@
       display: flex;
       flex-direction: column;
     }
-    input[type="text"], input[type="email"], input[type="password"] {
+    input[type="text"], input[type="email"], input[type="password"], select {
       margin-bottom: 20px;
       height: 48px;
       border-radius: 8px;
@@ -63,7 +63,7 @@
       outline: none;
       transition: border-color 0.3s ease;
     }
-    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus {
       border-color: #2563eb;
     }
     button {
@@ -141,6 +141,10 @@
         <input type="text" id="username" placeholder="Username or Email" required aria-label="Username or Email" />
         <input type="password" id="password" placeholder="Password" required aria-label="Password" />
         <input type="text" id="kelas" placeholder="Nama Kelas (e.g., 10A)" required aria-label="Nama Kelas" />
+        <select id="role" required>
+          <option value="siswa">Siswa</option>
+          <option value="guru">Guru</option>
+        </select>
         <button type="submit">Sign Up</button>
       </form>
       <p class="login-text">Already have an account? <a href="index.html">Login Now</a></p>
@@ -161,6 +165,7 @@
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value;
       const kelas = document.getElementById('kelas').value.trim();
+      const role = document.getElementById('role').value;
 
       if (!fullname || !username || !password || !kelas) {
         errorMsg.textContent = "Please fill in all fields";
@@ -172,7 +177,7 @@
         const response = await fetch('/api/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fullname, username, password, kelas })
+          body: JSON.stringify({ fullname, username, password, kelas, role })
         });
         const data = await response.json();
         if (data.success) {
